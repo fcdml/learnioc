@@ -1,6 +1,7 @@
 package com.mytry.code.beans.factory;
 
 import com.mytry.code.beans.BeanDefinition;
+import com.mytry.code.beans.BeanReference;
 import com.mytry.code.beans.PropertyValue;
 
 import java.lang.reflect.Field;
@@ -18,6 +19,7 @@ public class AutowireCapableBeanFactory extends AbstractBeanFactory {
     protected Object doCreateBean(BeanDefinition beanDefinition) throws IllegalAccessException, InstantiationException, NoSuchFieldException {
             //REM 通过反射创建对象 newInstance  这个对象只能调用无参构造 由newInstance的特性决定
             Object bean = createBeanInstance(beanDefinition);
+            beanDefinition.setBean(bean);
             applyPropertyValues(bean,beanDefinition);
             return bean;
     }
@@ -25,13 +27,18 @@ public class AutowireCapableBeanFactory extends AbstractBeanFactory {
     protected Object createBeanInstance(BeanDefinition beanDefinition) throws IllegalAccessException, InstantiationException {
         return beanDefinition.getBeanClass().newInstance();
     }
-    protected void applyPropertyValues(Object bean,BeanDefinition beanDefinition) throws NoSuchFieldException, IllegalAccessException {
+    protected void applyPropertyValues(Object bean,BeanDefinition beanDefinition) throws NoSuchFieldException, IllegalAccessException, InstantiationException {
         for (PropertyValue propertyValue:
              beanDefinition.getPropertyValues().getPropertyValueArrayList()) {
             Field declaredField = bean.getClass().getDeclaredField(propertyValue.getName());
           declaredField.setAccessible(true);
+          Object value=propertyValue.getValue();
+          if (value instanceof BeanReference){
+              BeanReference value1 = (BeanReference) value;
+              value=getBean(value1.getName());
+          }
           //REM 给bean属性设置值为propertyValue.getValue()
-          declaredField.set(bean,propertyValue.getValue());
+          declaredField.set(bean,value);
         }
     }
 

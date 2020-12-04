@@ -2,6 +2,7 @@ package com.mytry.code.beans.xml;
 
 import com.mytry.code.beans.AbstractBeanDefinitionReader;
 import com.mytry.code.beans.BeanDefinition;
+import com.mytry.code.beans.BeanReference;
 import com.mytry.code.beans.PropertyValue;
 import com.mytry.code.beans.io.ResourceLoader;
 import org.w3c.dom.Document;
@@ -9,13 +10,11 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
-
 /**
  * @Classname XmlBeanDefinitionReader
  * @Description TODO
@@ -23,7 +22,7 @@ import java.io.InputStream;
  * @Created by 2413776263@qq.com
  */
 public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
-    protected XmlBeanDefinitionReader(ResourceLoader resourceLoader) {
+    public XmlBeanDefinitionReader(ResourceLoader resourceLoader) {
         super(resourceLoader);
     }
 
@@ -76,7 +75,17 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
                 Element node1 = (Element) node;
                 String name = node1.getAttribute("name");
                 String value = node1.getAttribute("value");
-                beanDefinition.getPropertyValues().addPropertyValue(new PropertyValue(name,value));
+                if (value!=null && value.length()>0){
+                    beanDefinition.getPropertyValues().addPropertyValue(new PropertyValue(name,value));
+                }else {
+                  String ref=node1.getAttribute("ref");
+                  if (ref==null||ref.length()==0){
+                      throw  new IllegalArgumentException("Configuration problem: <property> element for property '"
+                              + name + "' must specify a ref or value");
+                  }
+                    BeanReference beanReference = new BeanReference(ref);
+                beanDefinition.getPropertyValues().addPropertyValue(new PropertyValue(name,beanReference));
+                }
             }
         }
     }

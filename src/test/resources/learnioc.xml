@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans>
+    <bean name="helloWorldService" class="com.mytry.code.HelloWorldService">
+        <property name="text" value="Hello-----helloWorldService"></property>
+        <property name="outPutService" ref="tt"></property>
+    </bean>
+    <bean name="tt" class="com.mytry.code.OutPutService">
+
+        <property name="helloWorldService" ref="helloWorldService"></property>
+    </bean>
+
+</beans>

@@ -13,7 +13,7 @@ public class BeanDefinition {
     private Class beanClass;
     //TODO 要根据 beanClassName 就是(com....)   通过放射 拿到Class对象
     private String beanClassName;
-     private PropertyValues propertyValues;
+     private PropertyValues propertyValues=new PropertyValues();
     public BeanDefinition() {
     }
     public BeanDefinition(Object bean) {
