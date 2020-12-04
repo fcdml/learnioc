@@ -14,6 +14,7 @@ public class PropertyValues {
     public PropertyValues() {
     }
      public  void addPropertyValue(PropertyValue pv){
+         System.out.println(pv.getName()+pv.getValue());
         this.propertyValueArrayList.add(pv);
      }
     public List<PropertyValue> getPropertyValueArrayList() {

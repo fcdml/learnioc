@@ -13,8 +13,8 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public interface BeanFactory {
   //获取Bean
-  public Object getBean(String name) throws IllegalAccessException, NoSuchFieldException, InstantiationException;
-   //注册BeanDefinition
-   public void  registerBeanDefinition(String name,BeanDefinition beanDefinition) throws IllegalAccessException, NoSuchFieldException, InstantiationException;
+   Object getBean(String name) throws IllegalAccessException, NoSuchFieldException, InstantiationException;
+  //注册BeanDefinition
+//   public void  registerBeanDefinition(String name,BeanDefinition beanDefinition) throws IllegalAccessException, NoSuchFieldException, InstantiationException;
 
 }

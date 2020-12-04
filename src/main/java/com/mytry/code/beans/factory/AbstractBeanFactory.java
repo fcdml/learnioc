@@ -30,11 +30,16 @@ public abstract class AbstractBeanFactory implements BeanFactory {
         }
       return bean;
     }
-    @Override
+
     public void registerBeanDefinition(String name, BeanDefinition beanDefinition) throws IllegalAccessException, NoSuchFieldException, InstantiationException {
                  beanDefinitionMap.put(name, beanDefinition);
                  beanDefinitionNames.add(name);
     }
+
+    public List<String> getBeanDefinitionNames() {
+        return beanDefinitionNames;
+    }
+
     // 此方法的用途
     public void preInstantiateSingletons() throws IllegalAccessException, NoSuchFieldException, InstantiationException {
         //TODO 迭代器的语法
